@@ -1,0 +1,54 @@
+.vs-section-form {
+    margin: 2rem auto ;
+    width: 350px;
+    border-radius: var( --radius-1);
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+    padding: var(--p-8);
+}
+.vs-form-register {
+    margin-bottom: 25px;
+}
+.vs-form-title {
+    color: var( --color-gray-800);
+    padding-bottom: var(--p-1) ;
+}
+.vs-form-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+.vs-form-box-error {
+    background-color: rgba(var(--color-pastel-red-rgb), 0.2);
+    border-radius: 7px;
+    padding: var(--p-1) var(--p-6) var(--p-3) var(--p-6);
+}
+
+.vs-section-terms {
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 25px;
+    white-space: unset;
+}
+.vs-section-terms > div {
+    display: inline;
+}
+.vs-section-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    justify-content: center;
+    padding-top: var(--p-7);
+    font-size: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.vs-actions-label {
+    color: var(--color-gray-800);
+}
+@media (min-width: 768px) {
+    .vs-section-form {
+        width: 400px;
+    }
+}
+@media (min-width: 992px) {
+    
+}
