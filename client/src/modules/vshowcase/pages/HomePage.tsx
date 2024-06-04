@@ -4,14 +4,47 @@ import ButtonCategories from "../components/ButtonCategories";
 import styled from "styled-components";
 
 import { ButtonProvider } from "../../../shared/contexts/ButtonContext";
+import { useEffect, useState } from "react";
+import { services } from "../../../shared/constant/services";
+import { GetAllProductsService } from "../services/getAllProducts.service";
 
+const getAllProductsService = new GetAllProductsService();
 
 function HomePage() {
+  const [products, setProducts] = useState<any>({});
+
+  const fetchProducts = async () => {
+    const response = await getAllProductsService.run();
+    const { data } = response;
+    console.log();
+    data.map((product: any) => {
+      product.images = product.images
+        .split(",")
+        .map((image: string) => `${services.api_url}/${image}`);
+      return {
+        ...data,
+      };
+    });
+
+    setProducts(data);
+  };
+
+  function truncateName(text: string) {
+    return text.length > 45 ? `${text.slice(0, 45)}...` : text;
+  }
+
+  function formattedPrice(price: number | bigint) {
+    return new Intl.NumberFormat("es-ES").format(price);
+  }
   const dynamicImages = [
     "src/assets/images/1.webp",
     "src/assets/images/2.webp",
     "src/assets/images/3.webp",
   ];
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   return (
     <ButtonProvider>
       <HomePageStyles>
@@ -46,51 +79,27 @@ function HomePage() {
           </div>
         </article>
         <article>
-        <div className="vs-cards">
-            <CardProducts
-              imageSrc="http://localhost:5173/src/assets/images/iphone.webp"
-              description="test"
-              price="2.790.000"
-              sellerName="cristian"
-              shippingPrice="Gratis"
-              url={{
-                pathname: `product test`,
-                state: "test",
-              }}
-            />
-            <CardProducts
-              imageSrc="http://localhost:5173/src/assets/images/iphone.webp"
-              description="test"
-              price="2.790.000"
-              sellerName="cristian"
-              shippingPrice="Gratis"
-              url={{
-                pathname: `product test`,
-                state: "test",
-              }}
-            />
-            <CardProducts
-              imageSrc="http://localhost:5173/src/assets/images/iphone.webp"
-              description="test"
-              price="2.790.000"
-              sellerName="cristian"
-              shippingPrice="Gratis"
-              url={{
-                pathname: `product test`,
-                state: "test",
-              }}
-            />
-            <CardProducts
-              imageSrc="http://localhost:5173/src/assets/images/iphone.webp"
-              description="test"
-              price="2.790.000"
-              sellerName="cristian"
-              shippingPrice="Gratis"
-              url={{
-                pathname: `product test`,
-                state: "test",
-              }}
-            />
+          <div className="vs-cards">
+            {Object.keys(products).length > 0 && (
+              <>
+                {products.map((product: any, index: number) => (
+                  <CardProducts
+                    key={index + 1}
+                    imageSrc={product.images[0]}
+                    description={truncateName(product.product_name)}
+                    price={formattedPrice(product.price)}
+                    sellerName={product.user_name}
+                    shippingPrice="Gratis"
+                    url={{
+                      pathname: `/${encodeURIComponent(product.product_name)}/${
+                        product.id
+                      }`,
+                      state: { product },
+                    }}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </article>
       </HomePageStyles>
